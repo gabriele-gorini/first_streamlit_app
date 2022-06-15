@@ -2,6 +2,7 @@ import streamlit
 import pandas
 import requests
 import snowflake.connector
+import urllib.error import URLError
 
 streamlit.title("My Parents New Healthy Diner")
 streamlit.header("Breakfast Menu")
@@ -33,6 +34,9 @@ fruityvice_response = requests.get("https://www.fruityvice.com/api/fruit/" + fru
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 streamlit.dataframe(fruityvice_normalized)
 
+#This line makes the code stop executing so we don't run the insert into snowflake every time we interact with the upper part of the page
+streamlit.stop()
+
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
 my_cur.execute("SELECT * from fruit_load_list")
@@ -42,4 +46,7 @@ streamlit.dataframe(my_data_row)
 
 #Allow user to add a fruit to the list
 add_my_fruit = streamlit.text_input("Add the fruit you wish", "Mango")
-streamlit.write("The user entered ", add_my_fruit)
+streamlit.write("Thanks for adding ", add_my_fruit)
+
+#This will add the chosen fruit into the Snowflake table
+my_cur.execute("insert into fruit_load_list ('from steamlit')")
