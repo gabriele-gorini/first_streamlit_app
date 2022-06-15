@@ -59,5 +59,8 @@ if streamlit.button('Get Fruit Load List'):
   streamlit.dataframe(my_data_rows)
 
 #Allow user to add a fruit to the list
-add_my_fruit = streamlit.text_input("Add the fruit you wish", "Mango")
-streamlit.text(insert_row_snowflake(add_my_fruit))
+  add_my_fruit = streamlit.text_input("Add the fruit you wish", "Mango")
+  if not add_my_fruit:
+    streamlit.error("Please insert a fruit name if you want to upload one")
+  else:
+    streamlit.text(insert_row_snowflake(add_my_fruit))
