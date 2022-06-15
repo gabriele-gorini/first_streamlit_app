@@ -16,4 +16,4 @@ streamlit.dataframe(my_fruit_list)
 streamlit.multiselect("Pick some fruits:", list(my_fruit_list.index))
 
 #Display the list on the page
-streamli.dataframe(my_fruit_list)
+streamlit.dataframe(my_fruit_list)
