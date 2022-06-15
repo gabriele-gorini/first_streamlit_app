@@ -47,19 +47,17 @@ def get_fruit_load_list():
        my_cur.execute("select * from fruit_load_list")
        return my_cur.fetchall()
 
+def insert_row_snowflake(new_fruit):
+  with my_cnx.cursor() as my_cur:
+       my_cur.execute("insert into fruit_load_list values ('" + new_fruit + "')")
+       return "Thanks for adding " + new_fruit
+
 #Button to load the fruit list
 if streamlit.button('Get Fruit Load List'):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   my_data_rows = get_fruit_load_list()
   streamlit.dataframe(my_data_rows)
 
- 
-#This line makes the code stop executing so we don't run the insert into snowflake every time we interact with the upper part of the page
-streamlit.stop()
-                        
 #Allow user to add a fruit to the list
 add_my_fruit = streamlit.text_input("Add the fruit you wish", "Mango")
-streamlit.write("Thanks for adding ", add_my_fruit)
-
-#This will add the chosen fruit into the Snowflake table
-my_cur.execute("insert into fruit_load_list ('from steamlit')")
+streamlit.text(insert_row_snowflake(add_my_fruit))
